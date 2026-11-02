@@ -12,11 +12,23 @@ let mapArr = jobs.map(job => job.title  )
 
 console.log(mapArr)
 
-let careem = jobs.find(job => job.company == 'Careem')
+let careemJob = jobs.find(job => job.company == 'Careem')
 
-console.log(careem)
+console.log(careemJob)
 
 jobs.forEach((job)=>{
   console.log(`${job.title} at ${job.company}:${job.salary} AED `)
 })
 
+let {title, salary} = careemJob
+
+console.log(title,salary)
+
+
+let salaries = jobs.map(job => job.salary)
+let totalSalary = salaries.reduce((sum,salary) => sum+salary,0)
+console.log(totalSalary)
+
+let newArr = {...careemJob}
+newArr.salary = 25000
+console.log(newArr)
