@@ -11,6 +11,7 @@ console.log(myList.innerHTML)
 
 function addText(inputText){
     console.log('clicked')
+    document.querySelector('#job-input').value= "";
     if(!inputText){
         return 
     }
