@@ -25,6 +25,6 @@ summary(jobs[job])
 const updatedJobs = jobs.map((job)=>{
     if(job.company == 'Emirates')
         return {...job,salary:1600}
-return jobs
+return job
 })
 
