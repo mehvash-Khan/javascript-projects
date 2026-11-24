@@ -1,0 +1,73 @@
+
+const expenseName = document.querySelector('#expense-name')
+const expenseAmount = document.querySelector('#expense-amount')
+const addButton = document.querySelector('#add-btn')
+let expenseList = document.querySelector('#expense-list')
+
+let expenses = JSON.parse(localStorage.getItem("expenses")) ?? []
+let total = JSON.parse(localStorage.getItem("total")) ?? 0
+let pending = JSON.parse(localStorage.getItem("pending")) ?? 0
+render();
+
+addButton.addEventListener('click',()=>{
+    console.log('clicked')
+    if(expenseName.value){
+        expenses.push({
+          name: expenseName.value,
+          amount: Number(expenseAmount.value),
+          paid: false
+        })
+    localStorage.setItem("expenses",JSON.stringify(expenses)) 
+    }
+   render();
+})
+
+
+
+function render(){
+   
+    let totalelement = document.getElementById("total")
+    total = expenses.reduce((sum,expense)=> sum + expense.amount,0)
+    localStorage.setItem("total",JSON.stringify(total))
+    totalelement.textContent=total
+    let pending = expenses.reduce((sum,expense)=>expense.paid?sum:sum=sum+expense.amount,0)
+     localStorage.setItem("pending",JSON.stringify(pending))
+     let pendingelement = document.getElementById("unpaid")
+     pendingelement.textContent= pending
+    
+    expenseList.textContent = ""
+    expenses.forEach(element => {
+        let li = document.createElement('li')
+        let close = document.createElement('button')
+        close.id = 'close-button'
+        close.textContent='X'
+        li.textContent=`${element.name}: ${element.amount} AED`
+        li.append(close);
+        expenseList.append(li)
+
+        close.addEventListener('click',()=>{
+             expenses =  expenses.filter(e=> e.name != element.name)
+             save();
+        })
+
+        li.addEventListener('click',()=>{
+            element.paid = !element.paid
+            save();
+        })
+        if(element.paid)
+        li.classList.toggle('toggle')
+    });
+}
+
+
+function save(){
+    localStorage.setItem("expenses",JSON.stringify(expenses))
+    render();
+}
+
+// function pending(){
+//     let pending = expenses.reduce((sum,expense)=>expense.paid?sum:sum=sum+expense.amount,0)
+//     localStorage.setItem("pending",JSON.stringify(pending))
+//     let pendingelement = document.getElementById("unpaid")
+//     pendingelement.textContent= pending
+// }
