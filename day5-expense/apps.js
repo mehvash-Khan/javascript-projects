@@ -10,33 +10,35 @@ let pending = JSON.parse(localStorage.getItem("pending")) ?? 0
 render();
 
 addButton.addEventListener('click',()=>{
-    console.log('clicked')
-    if(expenseName.value){
-        expenses.push({
-          name: expenseName.value,
-          amount: Number(expenseAmount.value),
-          paid: false
-        })
-    localStorage.setItem("expenses",JSON.stringify(expenses)) 
+    
+    if (!expenseName.value || expenseAmount.value <= 0)
+     return;
+     else
+        add(expenseName,expenseAmount);
+})
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        if (!expenseName.value || expenseAmount.value <= 0)
+        return;
+        else
+           add(expenseName,expenseAmount);
     }
-   render();
 })
 
 
-
 function render(){
-   
     let totalelement = document.getElementById("total")
     total = expenses.reduce((sum,expense)=> sum + expense.amount,0)
     localStorage.setItem("total",JSON.stringify(total))
     totalelement.textContent=total
-    let pending = expenses.reduce((sum,expense)=>expense.paid?sum:sum=sum+expense.amount,0)
+    let pending = expenses.reduce((sum,expense)=>expense.paid?sum:sum+expense.amount,0)
      localStorage.setItem("pending",JSON.stringify(pending))
      let pendingelement = document.getElementById("unpaid")
      pendingelement.textContent= pending
     
     expenseList.textContent = ""
-    expenses.forEach(element => {
+    expenses.forEach((element,index) => {
         let li = document.createElement('li')
         let close = document.createElement('button')
         close.id = 'close-button'
@@ -45,9 +47,10 @@ function render(){
         li.append(close);
         expenseList.append(li)
 
-        close.addEventListener('click',()=>{
-             expenses =  expenses.filter(e=> e.name != element.name)
-             save();
+        close.addEventListener('click',(event)=>{
+            event.stopPropagation();
+            expenses.splice(index, 1);
+            save();
         })
 
         li.addEventListener('click',()=>{
@@ -60,14 +63,20 @@ function render(){
 }
 
 
+
 function save(){
     localStorage.setItem("expenses",JSON.stringify(expenses))
     render();
 }
 
-// function pending(){
-//     let pending = expenses.reduce((sum,expense)=>expense.paid?sum:sum=sum+expense.amount,0)
-//     localStorage.setItem("pending",JSON.stringify(pending))
-//     let pendingelement = document.getElementById("unpaid")
-//     pendingelement.textContent= pending
-// }
+function add(expenseName,expenseAmount){
+    expenses.push({
+        name: expenseName.value,
+        amount: Number(expenseAmount.value),
+        paid: false
+      })
+  localStorage.setItem("expenses",JSON.stringify(expenses)) 
+  expenseName.value = ""
+  expenseAmount.value = ""
+  render();
+}
