@@ -5,8 +5,7 @@ const addButton = document.querySelector('#add-btn')
 let expenseList = document.querySelector('#expense-list')
 
 let expenses = JSON.parse(localStorage.getItem("expenses")) ?? []
-let total = JSON.parse(localStorage.getItem("total")) ?? 0
-let pending = JSON.parse(localStorage.getItem("pending")) ?? 0
+
 render();
 
 addButton.addEventListener('click',()=>{
@@ -29,11 +28,10 @@ document.addEventListener('keydown', (event) => {
 
 function render(){
     let totalelement = document.getElementById("total")
-    total = expenses.reduce((sum,expense)=> sum + expense.amount,0)
-    localStorage.setItem("total",JSON.stringify(total))
+    let total = expenses.reduce((sum,expense)=> sum + expense.amount,0)
     totalelement.textContent=total
+
     let pending = expenses.reduce((sum,expense)=>expense.paid?sum:sum+expense.amount,0)
-     localStorage.setItem("pending",JSON.stringify(pending))
      let pendingelement = document.getElementById("unpaid")
      pendingelement.textContent= pending
     

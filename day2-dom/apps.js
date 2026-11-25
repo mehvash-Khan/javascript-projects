@@ -1,10 +1,9 @@
 
 
 // const myList = document.querySelector('#job-list')
- const inputText = document.querySelector('#job-input');
-
-    const addButton = document.querySelector('#add-btn');
-    const myList = document.querySelector('#job-list');
+const inputText = document.querySelector('#job-input');
+const addButton = document.querySelector('#add-btn');
+const myList = document.querySelector('#job-list');
    
     
     addButton.addEventListener("click",()=>{
