@@ -37,11 +37,12 @@ async function getWeather(longitude,latitude){
 form.addEventListener('submit',async (event)=>{
     event.preventDefault();
     const formdata = new FormData(form);
-    const city = formdata.get('city')
-    if(city == null || city == ""){
+    const city = formdata.get('city').trim();
+    if(!city){
         return 
     }
     statusText.textContent = "Loading...."
+    result.hidden = true;
     
     try {
         const location = await getCoordinates(city);
