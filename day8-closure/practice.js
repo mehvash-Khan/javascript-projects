@@ -21,7 +21,7 @@ welcome("Mehvash")
 
 function makeMultiplier(x){
     function myfunc (number){
-        return number*2
+        return number*x
     }
     return myfunc
 }
@@ -60,11 +60,20 @@ account.deposit(50)
 account.withdraw(50)
 console.log(account.getBalance())
 
-let count = 0
+
+
+
+
 const button = document.querySelector('#button')
 const message = document.querySelector('#message')
-button.addEventListener('click',()=>{
-    count++;
-    message.textContent = `Clicked ${count} times`
+
+function counter(){
+    let count = 0
+    function increment(){
+        count++;
+        message.textContent = `Clicked ${count} times`
+    }
+   return increment;
 }
-)
+button.addEventListener('click',counter())
+
