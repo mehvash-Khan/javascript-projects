@@ -4,9 +4,9 @@ const jobs = [
     { title: "UI Developer", company: "Emirates", salary: 14000, remote: true },
   ];
 
-  const highestSalary = jobs.reduce((max,job)=> max > job.salary ? max : job.salary, jobs[0].salary)
+  const highestSalary = jobs.reduce((max,job)=> (max > job.salary) ? max : job.salary, jobs[0].salary)
   
-const remoteJobs = jobs.reduce((remote, job)=>job.remote? remote+1:remote ,0 )
+const remoteJobs = jobs.filter((job) => job.remote).reduce((remote, job)=> remote+1 ,0 )
 
 console.log(remoteJobs)
 
