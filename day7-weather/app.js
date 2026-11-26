@@ -3,6 +3,7 @@ const temperature = document.getElementById('temperature')
 const windreading = document.getElementById('wind')
 const result = document.getElementById('result')
 const statusText = document.querySelector("#status");
+const cityNameHeading = document.querySelector("#city-name");
 
 
 
@@ -13,7 +14,7 @@ async function getCoordinates(city){
         if (!coordinates.results)
             return null;
         let {longitude, latitude} =  coordinates.results[0]
-        return {longitude,latitude}
+        return coordinates.results[0]
 }
 
 
@@ -33,7 +34,7 @@ async function getWeather(longitude,latitude){
 }
 
 
-form.addEventListener('submit',(event)=>{
+form.addEventListener('submit',async (event)=>{
     event.preventDefault();
     const formdata = new FormData(form);
     const city = formdata.get('city')
@@ -42,21 +43,30 @@ form.addEventListener('submit',(event)=>{
     }
     statusText.textContent = "Loading...."
     
-        getCoordinates(city).then(({longitude,latitude})=>{
-            getWeather(longitude,latitude).then((weather)=>{
-                let {temperature_2m,wind_speed_10m} = weather
-                result.hidden = false
-                statusText.hidden=true
-                 temperature.textContent = temperature_2m
-                 windreading.textContent = wind_speed_10m
+    try {
+        const location = await getCoordinates(city);
 
-            })
-        })
-        .catch((error)=>{
-            statusText.textContent = "Something went wrong...."
-        })
+        if (!location) {
+          statusText.textContent = "City not found";
+         result.hidden = true
+          return;
+        }
+        
+    
+        const weather = await getWeather(location.longitude, location.latitude);
+        console.log(location)
+        cityNameHeading.textContent = `${location.name}, ${location.country}`;
+        temperature.textContent = weather.temperature_2m;
+        windreading.textContent = weather.wind_speed_10m;
+    
+        statusText.textContent = "";
+        result.hidden = false;
+      } catch (error) {
+        statusText.textContent = "Something went wrong, please try again.";
+      }
+    });
   
-})
+
 
 
 
