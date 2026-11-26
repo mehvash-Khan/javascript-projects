@@ -7,8 +7,8 @@ const addButton = document.querySelector('#add-btn')
 let expenseList = document.querySelector('#expense-list')
 
 
-load();
-render();
+let expenses = load();
+
 
 addButton.addEventListener('click',()=>{
     
@@ -30,7 +30,7 @@ document.addEventListener('keydown', (event) => {
 
 function render(){
    
-
+    
     getTotal(expenses)
     getUnpaid(expenses)
     expenseList.textContent = ""
@@ -46,12 +46,14 @@ function render(){
         close.addEventListener('click',(event)=>{
             event.stopPropagation();
             expenses.splice(index, 1);
-            save();
+            save(expenses);
+            render();
         })
 
         li.addEventListener('click',()=>{
             element.paid = !element.paid
-            save();
+            save(expenses);
+            render();
         })
         if(element.paid)
         li.classList.toggle('toggle')
@@ -67,7 +69,7 @@ function add(expenseName,expenseAmount){
         amount: Number(expenseAmount.value),
         paid: false
       })
-  localStorage.setItem("expenses",JSON.stringify(expenses)) 
+ save(expenses);
   expenseName.value = ""
   expenseAmount.value = ""
   render();
