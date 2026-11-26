@@ -8,7 +8,7 @@ let expenseList = document.querySelector('#expense-list')
 
 
 let expenses = load();
-
+render();
 
 addButton.addEventListener('click',()=>{
     
@@ -31,8 +31,15 @@ document.addEventListener('keydown', (event) => {
 function render(){
    
     
-    getTotal(expenses)
-    getUnpaid(expenses)
+    let totalelement = document.getElementById("total")
+    let total =   getTotal(expenses)
+    totalelement.textContent=total
+
+    let pending = getUnpaid(expenses)
+    let pendingelement = document.getElementById("unpaid")
+    pendingelement.textContent= pending
+
+    
     expenseList.textContent = ""
     expenses.forEach((element,index) => {
         let li = document.createElement('li')
@@ -46,14 +53,12 @@ function render(){
         close.addEventListener('click',(event)=>{
             event.stopPropagation();
             expenses.splice(index, 1);
-            save(expenses);
-            render();
+           update();
         })
 
         li.addEventListener('click',()=>{
             element.paid = !element.paid
-            save(expenses);
-            render();
+          update();
         })
         if(element.paid)
         li.classList.toggle('toggle')
@@ -69,8 +74,14 @@ function add(expenseName,expenseAmount){
         amount: Number(expenseAmount.value),
         paid: false
       })
- save(expenses);
+ 
   expenseName.value = ""
   expenseAmount.value = ""
-  render();
+update();
+}
+
+
+function update(){
+    save(expenses);
+    render();
 }
