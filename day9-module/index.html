@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense Tracker</title>
+  <link href="app.css" rel="stylesheet" />
+</head>
+<body>
+  <main class="app">
+    <h1>Expense Tracker</h1>
+
+    <section class="totals">
+      <p>Total: <span id="total">0</span> AED</p>
+      <p>Still to pay: <span id="unpaid">0</span> AED</p>
+    </section>
+
+    <section class="add-expense">
+      <input id="expense-name" type="text" placeholder="Description, e.g. Groceries" />
+      <input id="expense-amount" type="number" placeholder="Amount" min="1" />
+      <button id="add-btn">Add</button>
+    </section>
+
+    <ul id="expense-list"></ul>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
