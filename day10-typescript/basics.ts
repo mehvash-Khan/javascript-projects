@@ -8,22 +8,51 @@ function isGoodOffer(salary: number):boolean {
 
 isGoodOffer(1500);
 
-type job = {
-    title: String,
-    salary: Number,
+type Job = {
+    title: string,
+    company: string,
+    salary: number,
     remote: Boolean,
-    location?: String 
+    location?: string 
 
 }
 
 
-const jobs: job[] = []
+const jobs: Job[] = []
 
-function getRemoteJobs(jobs: job[]): job[]{
+function getRemoteJobs(jobs: Job[]): Job[]{
     return jobs.filter((job)=>job.remote)
 }
 
-function formatJob(job:job): string{
-    return `${job.title} at ${job.salary}`
+function formatJob(job:Job): string{
+    return `${job.company} at ${job.salary}`
 }
 
+type Status = "applied" | "interview" | "rejected" | "offer";
+
+type Application = {
+  company: string;
+  status: Status;
+};
+
+let applications: Application[] = [
+    {
+        company : "A",
+        status : "applied"
+    },
+    {
+        company : "B",
+        status : "interview"
+    },
+    {
+        company : "C",
+        status : "interview"
+    }
+]
+
+
+function company(apps: Application[]): Application[]{
+     return apps.filter((app)=> app.status == "interview");
+}
+
+console.log(company(applications))
